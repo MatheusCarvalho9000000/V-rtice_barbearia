@@ -1,0 +1,201 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 1: CABEÇALHO E NAVEGAÇÃO
+   Usa tokens (tokens.css), botões (buttons.css) e animações (animations.css).
+   ========================================================================== */
+
+.skip-link {
+  position: fixed; left: 16px; top: -64px; z-index: 200;
+  padding: 12px 20px;
+  background: var(--offwhite); color: var(--grafite);
+  border-radius: var(--radius);
+  transition: top 200ms ease;
+}
+.skip-link:focus { top: 16px; }
+
+/* ---- Barra ---- */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: var(--header-h);
+  transition: height 300ms ease;
+}
+.site-header.is-scrolled { height: var(--header-h-scrolled); }
+
+/* Fundo em camada própria: a opacidade anima suavemente */
+.site-header::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: rgba(23, 23, 23, .88);
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--linha);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.site-header.is-scrolled::before,
+.site-header.menu-aberto::before { opacity: 1; }
+.site-header.menu-aberto::before { background: var(--grafite); }
+
+/* Entrada: fade de 600ms após a abertura do hero (~1800ms; ver header.js) */
+.js .site-header { opacity: 0; transition: height 300ms ease, opacity 600ms ease; }
+.js .site-header.is-ready { opacity: 1; }
+
+.site-header__inner {
+  position: relative;
+  display: flex; align-items: center;
+  height: 100%;
+  gap: 16px;
+}
+
+/* ---- Logo ---- */
+.logo {
+  display: inline-flex; align-items: center; gap: 12px;
+  height: 28px;
+  color: var(--offwhite);
+  text-decoration: none;
+}
+.logo svg { height: 28px; width: 28px; flex: none; }
+.logo__texto {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: .38em;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-right: -.38em;      /* compensa o espaçamento final */
+}
+
+/* ---- Links (desktop) ---- */
+.nav { display: none; margin-left: auto; margin-right: 16px; }
+.nav__lista { display: flex; gap: 32px; list-style: none; margin: 0; padding: 0; }
+.nav__link {
+  position: relative;
+  display: inline-block;
+  padding: 8px 0;
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-ui);
+  color: var(--offwhite);
+  text-decoration: none;
+}
+.nav__link::after {
+  content: "";
+  position: absolute; left: 0; bottom: 2px;
+  width: 100%; height: 1px;
+  background: var(--champagne);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 300ms var(--ease-out);
+}
+.nav__link:hover::after,
+.nav__link:focus-visible::after,
+.nav__link.is-active::after { transform: scaleX(1); }
+
+/* ---- CTA ---- */
+.site-header__cta { margin-left: auto; white-space: nowrap; }
+
+/* ---- Botão de menu (duas linhas que formam um "V" ao abrir) ---- */
+.menu-toggle {
+  position: relative;
+  width: 44px; height: 44px;
+  margin-right: -10px;
+  padding: 0;
+  background: none; border: 0;
+  cursor: pointer;
+  color: var(--offwhite);
+}
+.menu-toggle__linha {
+  position: absolute; left: 10px; top: 50%;
+  width: 24px; height: 2px;
+  background: currentColor;
+  transition: transform 400ms var(--ease-out), background-color 300ms ease;
+}
+.menu-toggle__linha:nth-child(1) { transform: translateY(-4px); }
+.menu-toggle__linha:nth-child(2) { transform: translateY(4px); }
+.menu-toggle[aria-expanded="true"] { color: var(--champagne); }
+/* Aberto: as duas pontas inferiores se encontram no vértice */
+.menu-toggle[aria-expanded="true"] .menu-toggle__linha:nth-child(1) { transform: translate(-6px, 4px) rotate(60deg); }
+.menu-toggle[aria-expanded="true"] .menu-toggle__linha:nth-child(2) { transform: translate(6px, 4px) rotate(-60deg); }
+
+/* ---- Menu mobile em tela cheia ---- */
+.menu-mobile {
+  position: fixed; inset: 0;
+  z-index: 90;
+  display: flex; flex-direction: column;
+  padding: calc(var(--header-h) + 24px) var(--gutter) 32px;
+  background: var(--grafite);
+  overflow-y: auto;
+  opacity: 0; visibility: hidden;
+  transition: opacity 300ms ease, visibility 0s linear 300ms;
+}
+.menu-mobile.is-open {
+  opacity: 1; visibility: visible;
+  transition: opacity 300ms ease, visibility 0s;
+}
+.menu-mobile__lista {
+  list-style: none; margin: 0 0 auto; padding: 0;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.menu-mobile__link {
+  display: block;
+  padding: 10px 0;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--offwhite);
+  text-decoration: none;
+}
+.menu-mobile__link.is-active { color: var(--champagne); }
+
+/* Links entram em fila: subida + fade, 70ms entre eles */
+.menu-mobile__lista li,
+.menu-mobile__rodape {
+  opacity: 0;
+  transform: translateY(var(--anim-y));
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+.menu-mobile.is-open .menu-mobile__lista li,
+.menu-mobile.is-open .menu-mobile__rodape {
+  opacity: 1; transform: none;
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms + 120ms);
+}
+.menu-mobile__rodape {
+  --i: 6;
+  display: grid; gap: 20px; justify-items: start;
+  margin-top: 40px; padding-top: 28px;
+  border-top: 1px solid var(--linha);
+}
+.menu-mobile__rodape .btn { width: 100%; }
+.menu-mobile__insta {
+  color: var(--texto-suave);
+  font-size: var(--fs-small);
+  letter-spacing: .08em;
+  text-decoration: none;
+}
+
+/* Trava o scroll do corpo com o menu aberto */
+body.menu-travado { overflow: hidden; }
+
+/* ---- Desktop ---- */
+@media (min-width: 1024px) {
+  .nav { display: block; }
+  .site-header__cta { margin-left: 0; }
+  .menu-toggle, .menu-mobile { display: none; }
+}
+
+@media (max-width: 479px) {
+  .logo__texto { font-size: .9375rem; letter-spacing: .3em; }
+  .site-header__cta { padding-inline: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .site-header { transition: opacity 200ms ease; }
+  .site-header, .site-header::before { transition-duration: 0ms; }
+  .nav__link::after { transition: none; }
+  .menu-toggle__linha { transition: none; }
+  .menu-mobile, .menu-mobile.is-open { transition: opacity 200ms ease; }
+  .menu-mobile__lista li, .menu-mobile__rodape,
+  .menu-mobile.is-open .menu-mobile__lista li,
+  .menu-mobile.is-open .menu-mobile__rodape { transform: none; transition: opacity 200ms ease; transition-delay: 0ms; }
+}

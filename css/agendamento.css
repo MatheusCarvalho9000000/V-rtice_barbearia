@@ -1,0 +1,394 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 12: AGENDAMENTO
+   - Fundo em degradê diagonal --verde -> --grafite com linhas do vértice SVG ao fundo
+   - Layout de 2 colunas: esquerda título/apoio, direita painel de formulário
+   - Painel em --grafite-elevado, borda 1px --linha, sem sombra
+   - Campos com altura 52px, rótulo em .875rem, foco com borda e linha de 2px na base em 300ms
+   - Chips de período (Manhã / Tarde / Noite) com degradê champagne quando selecionados
+   - Mensagens de erro em --champagne-claro sem depender só de cor
+   - Pulso de brilho de 800ms para pré-seleções vindas de outras sessões
+   - Botão principal .btn--primary com compressão no clique e feedback pós-envio
+   ========================================================================== */
+
+.agendamento {
+  position: relative;
+  background: linear-gradient(135deg, var(--verde) 0%, #282d24 35%, var(--grafite) 75%);
+  color: var(--offwhite);
+  overflow: hidden;
+}
+
+/* Linhas do vértice em grande escala ao fundo (opacidade 12%), desenhadas ao entrar */
+.agendamento__bg-linhas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.12;
+  z-index: 0;
+}
+
+.agendamento .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Layout em duas colunas no desktop */
+.agendamento__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+@media (min-width: 992px) {
+  .agendamento__grid {
+    grid-template-columns: 1fr 1.15fr;
+  }
+}
+
+/* Coluna esquerda: Título e Textos de apoio */
+.agendamento__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.agendamento__titulo {
+  font-size: var(--fs-h2);
+  line-height: 1.15;
+  letter-spacing: .005em;
+  margin-bottom: 1.25rem;
+}
+
+.agendamento__descricao {
+  font-size: 1.0625rem;
+  line-height: var(--lh-body);
+  color: var(--offwhite);
+  margin-bottom: 2rem;
+  max-width: 48ch;
+}
+
+.agendamento__apoio {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--linha);
+  max-width: 48ch;
+}
+
+.agendamento__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  align-items: center;
+}
+
+.agendamento__link-whats,
+.agendamento__link-insta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.agendamento__nota,
+.agendamento__privacidade {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Coluna direita: Painel do formulário */
+.agendamento__painel {
+  background: var(--grafite-elevado);
+  border: 1px solid var(--linha);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  box-shadow: none;
+}
+
+.agendamento__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+/* Grupos de campos */
+.agendamento__campo {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.agendamento__label {
+  display: block;
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--texto-suave);
+  margin-bottom: 0.45rem;
+  line-height: 1.3;
+}
+
+.agendamento__obrigatorio {
+  color: var(--champagne);
+  margin-left: 0.15rem;
+}
+
+/* Wrappers de inputs */
+.agendamento__input-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.agendamento__input,
+.agendamento__select,
+.agendamento__textarea {
+  width: 100%;
+  background: var(--grafite);
+  border: 1px solid var(--linha);
+  border-radius: var(--radius);
+  color: var(--offwhite);
+  font-family: var(--font-base);
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: border-color 240ms ease, background-color 240ms ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.agendamento__input::placeholder,
+.agendamento__textarea::placeholder {
+  color: rgba(233, 225, 212, 0.35);
+}
+
+.agendamento__input,
+.agendamento__select {
+  height: 52px;
+  padding: 0 1rem;
+}
+
+.agendamento__textarea {
+  padding: 0.875rem 1rem;
+  min-height: 96px;
+  resize: vertical;
+}
+
+/* Seletor de data: suporte a dark mode */
+.agendamento__input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Seta estilizada do select */
+.agendamento__select-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.agendamento__select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 1.125rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--champagne);
+  border-bottom: 2px solid var(--champagne);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+  transition: transform 240ms ease;
+}
+
+.agendamento__select:focus + .agendamento__select-wrapper::after,
+.agendamento__select-wrapper:focus-within::after {
+  transform: translateY(-30%) rotate(225deg);
+}
+
+/* Linha de 2px em degradê champagne na base que se desenha em 300ms no foco */
+.agendamento__campo-linha {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--champagne-claro), var(--champagne), var(--champagne-escuro));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  border-radius: 1px;
+}
+
+.agendamento__input:focus,
+.agendamento__select:focus,
+.agendamento__textarea:focus {
+  border-color: var(--champagne);
+  outline: none;
+}
+
+.agendamento__input:focus ~ .agendamento__campo-linha,
+.agendamento__select:focus ~ .agendamento__campo-linha,
+.agendamento__textarea:focus ~ .agendamento__campo-linha {
+  transform: scaleX(1);
+}
+
+/* Estado de Erro */
+.agendamento__input.is-invalido,
+.agendamento__select.is-invalido {
+  border-color: var(--champagne-claro);
+}
+
+.agendamento__erro {
+  display: none;
+  font-size: var(--fs-small);
+  color: var(--champagne-claro);
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+
+.agendamento__erro.is-visivel {
+  display: block;
+}
+
+/* Pulso de brilho de 800ms ao receber pré-seleção */
+@keyframes campoPulsoBrilho {
+  0% {
+    box-shadow: 0 0 0 0 rgba(180, 154, 115, 0.85);
+    border-color: var(--champagne-claro);
+  }
+  50% {
+    box-shadow: 0 0 18px 4px rgba(180, 154, 115, 0.5);
+    border-color: var(--champagne-claro);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(180, 154, 115, 0);
+    border-color: var(--linha);
+  }
+}
+
+.campo-pulse {
+  animation: campoPulsoBrilho 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Chips de período (Manhã · Tarde · Noite) */
+.agendamento__chips {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.agendamento__chip {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.agendamento__chip-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.agendamento__chip-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  background: var(--grafite);
+  border: 1px solid var(--linha);
+  border-radius: var(--radius);
+  color: var(--offwhite);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  transition: border-color 200ms ease, background 240ms ease, color 200ms ease;
+}
+
+.agendamento__chip:hover .agendamento__chip-label {
+  border-color: var(--champagne);
+}
+
+.agendamento__chip-input:focus-visible + .agendamento__chip-label {
+  outline: 2px solid var(--champagne);
+  outline-offset: 2px;
+}
+
+/* Selecionado = fundo em degradê champagne e texto --grafite */
+.agendamento__chip-input:checked + .agendamento__chip-label {
+  background: linear-gradient(135deg, var(--champagne-claro) 0%, var(--champagne) 100%);
+  color: var(--grafite);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+/* Botão principal de envio */
+.agendamento__btn-submit {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 120ms ease;
+}
+
+/* Breve compressão no clique (scale .98) */
+.agendamento__btn-submit:active {
+  transform: scale(0.98);
+}
+
+/* Feedback pós-envio */
+.agendamento__feedback {
+  margin-top: 1rem;
+  padding: 0.875rem 1rem;
+  background: rgba(65, 70, 56, 0.4);
+  border: 1px solid var(--linha);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.agendamento__feedback-texto {
+  font-size: var(--fs-small);
+  color: var(--offwhite);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.agendamento__feedback a {
+  color: var(--champagne);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: color 200ms ease;
+}
+
+.agendamento__feedback a:hover {
+  color: var(--champagne-claro);
+}
+
+/* Responsividade mobile */
+@media (max-width: 767px) {
+  .agendamento__chips {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .agendamento__chip-label {
+    width: 100%;
+    padding: 0 0.5rem;
+  }
+}
+
+/* Acessibilidade de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .agendamento__campo-linha,
+  .campo-pulse,
+  .agendamento__btn-submit:active {
+    transition: none !important;
+    animation: none !important;
+  }
+}

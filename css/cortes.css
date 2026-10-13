@@ -1,0 +1,268 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 5: CORTES
+   Usa tokens (tokens.css), base (base.css), botões (buttons.css) e animações.
+   Fundo grafite, abas horizontais com linha deslizante, linhas de corte em 2 colunas.
+   ========================================================================== */
+
+.cortes {
+  background: var(--grafite);
+  color: var(--offwhite);
+  position: relative;
+}
+
+.cortes__intro {
+  max-width: 680px;
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+.cortes__intro-texto {
+  color: var(--texto-suave);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+/* ---- Navegação por abas ---- */
+.cortes__tabs-wrapper {
+  position: relative;
+  margin-bottom: clamp(32px, 5vw, 48px);
+  border-bottom: 1px solid var(--linha);
+  overflow-x: auto;
+  scrollbar-width: none;               /* Firefox */
+  -ms-overflow-style: none;            /* IE/Edge */
+}
+.cortes__tabs-wrapper::-webkit-scrollbar { display: none; }
+
+.cortes__tablist {
+  display: flex;
+  gap: clamp(16px, 3.5vw, 40px);
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: max-content;
+}
+
+.cortes__tab {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 16px 4px 18px;
+  font-family: var(--font-base);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-ui);
+  color: var(--texto-suave);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 300ms ease;
+}
+
+.cortes__tab:hover,
+.cortes__tab:focus-visible {
+  color: var(--offwhite);
+}
+
+.cortes__tab[aria-selected="true"] {
+  color: var(--offwhite);
+}
+
+/* Linha indicadora deslizante sob a aba ativa */
+.cortes__tab-indicator {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--champagne-degrade), var(--champagne-claro));
+  transform-origin: left center;
+  transition: transform 400ms var(--ease-out), width 400ms var(--ease-out);
+  pointer-events: none;
+}
+
+/* ---- Painéis de cortes ---- */
+.cortes__painel {
+  position: relative;
+}
+
+.cortes__painel[hidden] {
+  display: none;
+}
+
+/* Transições na troca de aba */
+.cortes__painel.is-leaving {
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.cortes__painel.is-entering {
+  animation: cortesPainelEntra 500ms var(--ease-out) forwards;
+}
+
+@keyframes cortesPainelEntra {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Grade de cortes (2 colunas desktop, 1 mobile) ---- */
+.cortes__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 1024px) {
+  .cortes__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 56px;
+  }
+}
+
+/* ---- Linha de corte ---- */
+.cortes__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: 22px;
+  border-bottom: 1px solid var(--linha);
+}
+
+/* Linha desenhada de hover */
+.cortes__item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--champagne-degrade), var(--champagne-claro));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 400ms var(--ease-out);
+  pointer-events: none;
+}
+
+.cortes__item:hover::after,
+.cortes__item:focus-within::after {
+  transform: scaleX(1);
+}
+
+.cortes__item:hover .cortes__item-nome,
+.cortes__item:focus-within .cortes__item-nome {
+  transform: translateX(8px);
+  color: var(--champagne-claro);
+}
+
+.cortes__item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cortes__item-nome {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--offwhite);
+  transition: transform 350ms var(--ease-out), color 300ms ease;
+}
+
+.cortes__item-desc {
+  margin: 6px 0 0;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--texto-suave);
+  max-width: 44ch;
+}
+
+/* Slot opcional de imagem por corte (oculto enquanto não houver imagem) */
+.cortes__slot-img {
+  display: none;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--linha);
+}
+
+.cortes__slot-img[src]:not([src=""]) {
+  display: block;
+}
+
+.cortes__item-acao {
+  flex-shrink: 0;
+}
+
+/* ---- Aba 4: Cacheados, crespos e compridos ---- */
+.cortes__especial {
+  max-width: 720px;
+  padding-block: 24px;
+}
+
+.cortes__especial-texto {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--texto-suave);
+  margin-bottom: 28px;
+}
+
+.cortes__especial-lista {
+  margin-bottom: 36px;
+}
+
+.cortes__especial-lista li {
+  color: var(--offwhite);
+  font-size: 1.0625rem;
+}
+
+/* ---- Fechamento da sessão ---- */
+.cortes__fechamento {
+  margin-top: clamp(48px, 8vw, 72px);
+  padding-top: 36px;
+  border-top: 1px solid var(--linha);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.cortes__fechamento-texto {
+  margin: 0;
+  font-size: var(--fs-body);
+  color: var(--texto-suave);
+  max-width: 46ch;
+}
+
+/* ---- Acessibilidade de movimento ---- */
+@media (prefers-reduced-motion: reduce) {
+  .cortes__tab-indicator {
+    transition: none;
+  }
+  .cortes__painel.is-leaving {
+    opacity: 0;
+    transform: none;
+    transition: opacity 150ms ease;
+  }
+  .cortes__painel.is-entering {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .cortes__item::after {
+    transition: none;
+  }
+  .cortes__item:hover .cortes__item-nome,
+  .cortes__item:focus-within .cortes__item-nome {
+    transform: none;
+  }
+}

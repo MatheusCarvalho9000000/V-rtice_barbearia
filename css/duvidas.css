@@ -1,0 +1,207 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 11: PERGUNTAS FREQUENTES (FAQ)
+   - Fundo --grafite
+   - Acordeão em lista única (max-width 820px, centralizado)
+   - Divisória 1px --linha
+   - Ícone de duas linhas que se encontram (+ vira - girando 90° em 300ms)
+   - Abertura/fechamento em grid-template-rows 0fr -> 1fr em 400ms
+   - Respostas abertas não desaparecem ao rolar (up-once)
+   - Acessível com aria-expanded e aria-controls, e fallback legível sem JS
+   ========================================================================== */
+
+.duvidas {
+  background-color: var(--grafite);
+  color: var(--offwhite);
+  position: relative;
+}
+
+.duvidas__header {
+  text-align: center;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.duvidas__titulo {
+  font-size: var(--fs-h2);
+  letter-spacing: .005em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* Container do acordeão centralizado e limitado a 820px */
+.duvidas__accordion {
+  max-width: 820px;
+  width: 100%;
+  margin-inline: auto;
+  border-top: 1px solid var(--linha);
+}
+
+.duvidas__item {
+  border-bottom: 1px solid var(--linha);
+  position: relative;
+  transition: background-color 240ms ease;
+}
+
+.duvidas__item-titulo {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Botão gatilho */
+.duvidas__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding-block: clamp(1.25rem, 2.5vw, 1.625rem);
+  padding-inline: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--offwhite);
+  font-family: var(--font-base);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.45;
+  transition: color 240ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.duvidas__pergunta {
+  flex: 1;
+  transition: color 240ms ease;
+}
+
+.duvidas__trigger:hover .duvidas__pergunta {
+  color: var(--champagne-claro);
+}
+
+/* Foco acessível */
+.duvidas__trigger:focus {
+  outline: none;
+}
+
+.duvidas__trigger:focus-visible {
+  outline: 2px solid var(--champagne);
+  outline-offset: 4px;
+  border-radius: var(--radius);
+}
+
+/* Ícone de abrir/fechar: duas linhas que se encontram (+ vira − girando 90° em 300ms) */
+.duvidas__icone {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.duvidas__icone-linha {
+  position: absolute;
+  background-color: var(--champagne);
+  border-radius: 1px;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 240ms ease;
+  will-change: transform;
+}
+
+.duvidas__icone-linha--h {
+  width: 14px;
+  height: 2px;
+  top: 7px;
+  left: 1px;
+}
+
+.duvidas__icone-linha--v {
+  width: 2px;
+  height: 14px;
+  left: 7px;
+  top: 1px;
+  transform: rotate(0deg);
+}
+
+/* Estado ativo/aberto do ícone: linha vertical gira 90° e sobrepõe a horizontal */
+.duvidas__trigger[aria-expanded="true"] .duvidas__icone-linha--v,
+.duvidas__item.is-aberto .duvidas__icone-linha--v {
+  transform: rotate(90deg);
+}
+
+.duvidas__trigger:hover .duvidas__icone-linha {
+  background-color: var(--champagne-claro);
+}
+
+/* Transição suave de altura via grid-template-rows (0fr -> 1fr em 400ms) */
+.duvidas__conteudo {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.duvidas__conteudo-inner {
+  min-height: 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: visibility 400ms,
+              opacity 320ms ease,
+              transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.duvidas__trigger[aria-expanded="true"] + .duvidas__conteudo,
+.duvidas__item.is-aberto .duvidas__conteudo {
+  grid-template-rows: 1fr;
+}
+
+.duvidas__trigger[aria-expanded="true"] + .duvidas__conteudo .duvidas__conteudo-inner,
+.duvidas__item.is-aberto .duvidas__conteudo .duvidas__conteudo-inner {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.duvidas__resposta {
+  color: var(--texto-suave);
+  font-size: 1rem;
+  line-height: var(--lh-body);
+  margin: 0;
+  padding-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  max-width: 72ch;
+}
+
+/* Animações: respostas abertas NÃO desaparecem ao rolar */
+.js .duvidas__item.is-aberto {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Fallback legível sem JavaScript */
+html:not(.js) .duvidas__conteudo {
+  grid-template-rows: 1fr;
+}
+
+html:not(.js) .duvidas__conteudo-inner {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+}
+
+html:not(.js) .duvidas__icone {
+  display: none;
+}
+
+/* Respeito a preferências de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .duvidas__conteudo,
+  .duvidas__conteudo-inner,
+  .duvidas__icone-linha {
+    transition-duration: 0.01ms !important;
+  }
+}

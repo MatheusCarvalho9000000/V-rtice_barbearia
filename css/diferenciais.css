@@ -1,0 +1,154 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 4: DIFERENCIAIS
+   Usa tokens (tokens.css), base (base.css) e animações (animations.css).
+   Fundo grafite-elevado, linhas largas com divisórias desenhadas e hover suave.
+   ========================================================================== */
+
+.diferenciais {
+  background: var(--grafite-elevado);
+  color: var(--offwhite);
+  position: relative;
+}
+
+.diferenciais__titulo {
+  margin-bottom: clamp(48px, 8vw, 80px);
+}
+
+.diferenciais__lista {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Divisória inferior final da lista */
+.diferenciais__lista::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--linha);
+}
+
+.diferenciais__item {
+  position: relative;
+  cursor: default;
+}
+
+/* ---- Divisória horizontal de cada linha ---- */
+.diferenciais__linha-div {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: var(--linha);
+  overflow: hidden;
+}
+
+/* Animação de entrada: a linha base se desenha da esquerda para a direita */
+.diferenciais__linha-div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(233, 225, 212, .24);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 900ms var(--ease-out);
+  transition-delay: calc(var(--anim-i, 0) * var(--anim-stagger) + 100ms);
+}
+.is-in .diferenciais__linha-div::before {
+  transform: scaleX(1);
+}
+
+/* Hover: degradê champagne desliza da esquerda para a direita */
+.diferenciais__linha-div::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--champagne-degrade) 0%, var(--champagne-claro) 50%, var(--champagne-degrade) 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 450ms var(--ease-out);
+}
+
+/* ---- Conteúdo da linha ---- */
+.diferenciais__conteudo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding-block: 28px;
+  transition: background-color 300ms ease;
+}
+
+@media (min-width: 1024px) {
+  .diferenciais__conteudo {
+    grid-template-columns: minmax(360px, 1.3fr) 1fr;
+    gap: 48px;
+    align-items: baseline;
+    padding-block: 40px;
+  }
+
+  /* Hover (desktop): divisória vira degradê e título se desloca 8px */
+  .diferenciais__item:hover .diferenciais__linha-div::after {
+    transform: scaleX(1);
+  }
+
+  .diferenciais__item:hover .diferenciais__item-titulo {
+    transform: translateX(8px);
+    color: var(--offwhite);
+  }
+
+  .diferenciais__item:hover .diferenciais__item-frase {
+    color: var(--offwhite);
+  }
+}
+
+/* ---- Título da linha ---- */
+.diferenciais__item-titulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--offwhite);
+  transition: transform 350ms var(--ease-out), color 300ms ease;
+}
+
+/* Marcador 'V' champagne à esquerda do título */
+.diferenciais__icone-v {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--champagne);
+  flex-shrink: 0;
+}
+
+.diferenciais__icone-v svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---- Frase explicativa ---- */
+.diferenciais__item-frase {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--texto-suave);
+  max-width: var(--measure);
+  transition: color 300ms ease;
+}
+
+/* ---- Acessibilidade de movimento ---- */
+@media (prefers-reduced-motion: reduce) {
+  .diferenciais__linha-div::before,
+  .diferenciais__linha-div::after {
+    transform: scaleX(1);
+    transition: none;
+  }
+  .diferenciais__item:hover .diferenciais__item-titulo {
+    transform: none;
+  }
+}

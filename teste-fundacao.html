@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fundação — Vértice Barbearia (página de teste)</title>
+  <meta name="description" content="Página de teste da SESSÃO 0: tokens, botões, animações e configuração da Vértice Barbearia.">
+  <meta name="robots" content="noindex">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <style>
+    /* Apenas para a página de teste */
+    .teste-hero { min-height: 100svh; display: grid; align-content: center; justify-items: start; gap: 24px; }
+    .teste-hero svg { width: 56px; }
+    .paleta { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 24px; }
+    .amostra { width: 120px; padding: 40px 12px 10px; border: 1px solid var(--linha); font-size: var(--fs-small); }
+    .botoes { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .cartao { padding: 40px 0; border-top: 1px solid var(--linha); }
+    .teste-cf { aspect-ratio: 16 / 7; margin-top: 24px; }
+    .teste-cf img { position: absolute; }
+    .trilha { position: relative; width: 1px; background: var(--linha); min-height: 260px; margin-left: 12px; }
+    .trilha [data-anim="progress"] { position: absolute; inset: 0; background: var(--champagne); }
+  </style>
+</head>
+<body>
+
+  <section class="section bg-grafite" aria-labelledby="t-titulo">
+    <div class="container teste-hero">
+      <span class="shine" data-shine-delay="800">
+        <svg class="v-linhas" viewBox="0 0 48 48" data-anim="draw" aria-hidden="true">
+          <path d="M10 6 L24 42"/><path d="M42 6 L24 42"/>
+        </svg>
+      </span>
+      <h1 id="t-titulo" data-anim="lines">Precisão que define seu estilo.</h1>
+      <p class="texto-suave" data-anim="up-once">Página de teste da SESSÃO 0. Role para ver os elementos subirem, desaparecerem ao sair por cima e reaparecerem ao voltar.</p>
+      <div class="botoes" data-anim="up-once">
+        <a class="btn btn--primary btn--repouso" data-whatsapp="generica">Agendar pelo WhatsApp</a>
+        <a class="btn btn--secondary" href="#botoes">Ver botões</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-elevado" aria-labelledby="t-cores">
+    <div class="container">
+      <h2 id="t-cores" data-anim="lines">Tokens de cor</h2>
+      <div class="paleta" data-anim-group>
+        <div class="amostra" data-anim="up" style="background:var(--grafite)">--grafite</div>
+        <div class="amostra" data-anim="up" style="background:var(--offwhite);color:var(--grafite)">--offwhite</div>
+        <div class="amostra" data-anim="up" style="background:var(--champagne);color:var(--grafite)">--champagne</div>
+        <div class="amostra" data-anim="up" style="background:var(--verde)">--verde</div>
+        <div class="amostra" data-anim="up" style="background:var(--champagne-escuro)">--champagne-escuro</div>
+        <div class="amostra" data-anim="up" style="background:var(--verde-medio)">--verde-medio</div>
+      </div>
+      <ul class="v-lista" data-anim="up">
+        <li>Marcador "V" pequeno em champagne</li>
+        <li>Segundo item da lista</li>
+      </ul>
+      <div class="v-divisor" style="margin-top:48px" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="section bg-offwhite" id="botoes" aria-labelledby="t-botoes">
+    <div class="container">
+      <h2 id="t-botoes" data-anim="lines">Botões sobre off-white</h2>
+      <p data-anim="up">Texto em grafite; destaques em champagne escuro.</p>
+      <div class="botoes" data-anim="up-once">
+        <a class="btn btn--primary" data-whatsapp="servico" data-nome="Vértice Corte">Primário</a>
+        <a class="btn btn--secondary" href="#botoes">Secundário</a>
+        <a class="btn btn--verde" href="#botoes">Verde</a>
+        <a class="btn btn--link" href="#botoes">Quero este corte</a>
+        <button class="btn btn--primary" disabled>Desabilitado</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-verde" aria-labelledby="t-prog">
+    <div class="container">
+      <h2 id="t-prog" data-anim="lines">Linha ligada ao scroll</h2>
+      <div class="trilha"><span data-anim="progress"></span></div>
+      <p data-anim="up" style="margin-top:32px">Reversível: este bloco some ao sair por cima.</p>
+      <p data-anim="up">Segundo bloco do mesmo grupo.</p>
+    </div>
+  </section>
+
+  <section class="section bg-grafite" aria-labelledby="t-cf">
+    <div class="container">
+      <h2 id="t-cf" data-anim="lines">Crossfade e Ken Burns</h2>
+      <div class="crossfade teste-cf foto" data-crossfade-interval="6500">
+        <img class="kenburns" src="area_01.jpg" alt="Salão da Vértice com cadeiras e espelhos" loading="lazy">
+        <img class="kenburns" src="area_02.jpg" alt="Bancada de lavagem com cubas e espelhos" loading="lazy">
+      </div>
+      <p class="texto-pequeno texto-suave" style="margin-top:16px" data-anim="up-once" id="rodape-teste">
+        Config carregada: <code id="saida-config"></code>
+      </p>
+      <p data-anim="up-once"><a class="btn btn--link" id="link-wa" target="_blank" rel="noopener">Testar buildWhatsAppLink</a></p>
+    </div>
+  </section>
+
+  <script src="js/config.js"></script>
+  <script src="js/animations.js"></script>
+  <script>
+    document.getElementById("link-wa").href = buildWhatsAppLink("Olá, Vértice! Quero agendar um horário.");
+    document.getElementById("saida-config").textContent = buildWhatsAppLink("Olá, Vértice! Quero agendar um horário.");
+  </script>
+</body>
+</html>

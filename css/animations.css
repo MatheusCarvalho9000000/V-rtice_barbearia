@@ -1,0 +1,169 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — CATÁLOGO DE ANIMAÇÕES (SESSÃO 0)
+   Controlado por js/animations.js. Só anima transform e opacity
+   (e background-position nos botões).
+
+   Atributos:
+     data-anim="up"        sobe, aparece e desaparece (reversível)
+     data-anim="up-once"   sobe e permanece
+     data-anim="lines"     título por linhas, sobem de máscara
+     data-anim="draw"      traço SVG se desenha
+     data-anim="progress"  linha ligada ao scroll (var --progress 0..1)
+     data-anim-group       filhos [data-anim] entram em stagger
+     data-parallax="0.15"  paralaxe suave
+   Classes: .crossfade  .kenburns  .shine
+   Estados aplicados pelo JS: .is-in  .is-above
+   ========================================================================== */
+
+/* Os estados "ocultos" só valem com JS ativo (html.js): sem JS o conteúdo fica legível. */
+
+/* ---- up / up-once ---- */
+.js [data-anim="up"],
+.js [data-anim="up-once"] {
+  opacity: 0;
+  transform: translate3d(var(--anim-x, 0), var(--anim-y), 0);
+  transition: opacity var(--anim-dur-out) ease,
+              transform var(--anim-dur-out) ease;
+  transition-delay: calc(var(--anim-i, 0) * var(--anim-stagger));
+}
+.js [data-anim="up"].is-in,
+.js [data-anim="up-once"].is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--anim-dur-in) var(--ease-out),
+              transform var(--anim-dur-in) var(--ease-out);
+  transition-delay: calc(var(--anim-i, 0) * var(--anim-stagger));
+}
+/* Saiu por cima (rolando para baixo) */
+.js [data-anim="up"].is-above {
+  opacity: 0;
+  transform: translate3d(var(--anim-x, 0), var(--anim-y-out), 0);
+  transition-delay: 0ms;
+}
+/* Variantes laterais (ex.: linha do tempo da SESSÃO 8) */
+[data-anim-from="left"]  { --anim-x: -40px; }
+[data-anim-from="right"] { --anim-x: 40px; }
+
+/* ---- lines: título dividido em linhas com máscara ---- */
+.anim-line { display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; }
+.anim-line__inner { display: block; }
+.js [data-anim="lines"].is-split .anim-line__inner {
+  transform: translateY(105%);
+  transition: transform 900ms var(--ease-out);
+  transition-delay: calc(var(--line-i, 0) * 120ms);
+}
+.js [data-anim="lines"].is-split.is-in .anim-line__inner { transform: none; }
+
+/* ---- draw: traços SVG (o JS define pathLength=1) ---- */
+.js [data-anim="draw"] path,
+.js [data-anim="draw"] line,
+.js [data-anim="draw"] polyline,
+.js path[data-anim="draw"],
+.js line[data-anim="draw"],
+.js polyline[data-anim="draw"] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1200ms var(--ease-out);
+}
+.js [data-anim="draw"].is-in path,
+.js [data-anim="draw"].is-in line,
+.js [data-anim="draw"].is-in polyline,
+.js path[data-anim="draw"].is-in,
+.js line[data-anim="draw"].is-in,
+.js polyline[data-anim="draw"].is-in { stroke-dashoffset: 0; }
+
+/* Linha que se desenha da esquerda p/ direita (divisórias de lista) */
+.linha-draw {
+  position: relative;
+  height: 1px;
+  background: var(--linha);
+}
+.linha-draw::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--detalhe);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1000ms var(--ease-out);
+}
+.is-in > .linha-draw::after, .linha-draw.is-in::after { transform: scaleX(1); }
+
+/* ---- progress: usa --progress (0..1) definido pelo JS ---- */
+[data-anim="progress"] {
+  transform-origin: top center;
+  transform: scaleY(var(--progress, 0));
+  will-change: transform;
+}
+[data-anim="progress"][data-axis="x"] {
+  transform-origin: left center;
+  transform: scaleX(var(--progress, 0));
+}
+
+/* ---- crossfade (timed ou guiado por scroll) ---- */
+.crossfade { position: relative; overflow: hidden; }
+.crossfade > * {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  transition: opacity 1600ms ease-in-out;
+}
+.crossfade > .is-active { opacity: 1; z-index: 1; }
+.crossfade > img, .crossfade picture img { object-fit: cover; filter: var(--foto-filter); }
+.crossfade--rapido > * { transition-duration: 1200ms; }   /* SESSÃO 9 */
+
+/* ---- Ken Burns: zoom lento só no item ativo ---- */
+.kenburns { transform: scale(1); transition: transform 8s linear; }
+.is-active.kenburns, .is-active > .kenburns, .is-active .kenburns { transform: scale(1.08); }
+/* O item que sai continua o zoom enquanto desaparece (mantém o último estado via .is-leaving) */
+.kenburns.is-leaving, .is-leaving .kenburns { transform: scale(1.08); }
+/* Slides inativos voltam à escala 1 sem transição (já estão invisíveis) */
+.crossfade > .kenburns:not(.is-active):not(.is-leaving),
+.crossfade > :not(.is-active):not(.is-leaving) .kenburns { transform: scale(1); transition: none; }
+
+/* ---- Paralaxe: o JS define --py (px) ---- */
+[data-parallax] { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
+
+/* ---- Brilho no logo: faixa champagne atravessa uma vez ---- */
+.shine { position: relative; overflow: hidden; display: inline-block; }
+.shine::after {
+  content: "";
+  position: absolute; top: -10%; bottom: -10%; left: 0;
+  width: 40%;
+  background: linear-gradient(100deg, transparent 0%, rgba(227, 211, 179, .75) 50%, transparent 100%);
+  transform: translateX(-130%) skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.shine.is-shining::after { animation: shine-passa 1100ms ease-in-out 1 forwards; }
+@keyframes shine-passa {
+  0%   { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateX(330%) skewX(-18deg); opacity: 0; }
+}
+
+/* ---- Acessibilidade de movimento ---- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  /* Sem translações; só opacidade curta (200ms) */
+  .js [data-anim="up"],
+  .js [data-anim="up-once"],
+  .js [data-anim="up"].is-in,
+  .js [data-anim="up-once"].is-in,
+  .js [data-anim="up"].is-above {
+    transform: none;
+    transition: opacity 200ms ease;
+    transition-delay: 0ms;
+  }
+  .js [data-anim="lines"].is-split .anim-line__inner { transform: none; transition: none; }
+  .js [data-anim="draw"] path, .js [data-anim="draw"] line, .js [data-anim="draw"] polyline,
+  .js path[data-anim="draw"], .js line[data-anim="draw"], .js polyline[data-anim="draw"] {
+    stroke-dasharray: none; stroke-dashoffset: 0; transition: none;
+  }
+  .linha-draw::after { transform: scaleX(1); transition: none; }
+  .crossfade > * { transition-duration: 200ms; }
+  .kenburns, .is-active.kenburns, .is-active > .kenburns, .is-active .kenburns,
+  .kenburns.is-leaving, .is-leaving .kenburns { transform: none; transition: none; }
+  [data-parallax] { transform: none; }
+  .shine::after { display: none; }
+}

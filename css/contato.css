@@ -1,0 +1,427 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 13: CONTATO, LOCALIZAÇÃO, RODAPÉ E BOTÃO FLUTUANTE
+   - Fundo --grafite
+   - Duas colunas (informações à esquerda, fachada/mapa à direita)
+   - Mobile: fachada primeiro (order: -1)
+   - Rodapé com linha superior de 1px --champagne que se desenha da esquerda p/ direita
+   - Logo lockup e colunas de links, contato e direitos
+   - Botão flutuante de WhatsApp (pílula no desktop, círculo 56px no mobile)
+   - Botão "Voltar ao topo" com símbolo V invertido
+   ========================================================================== */
+
+/* ==========================================================================
+   1. SEÇÃO DE LOCALIZAÇÃO E CONTATO (#contato)
+   ========================================================================== */
+.contato {
+  background-color: var(--grafite);
+  color: var(--offwhite);
+  position: relative;
+}
+
+.contato__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .contato__grid {
+    grid-template-columns: 1.05fr 1.15fr;
+  }
+}
+
+/* Coluna de informações */
+.contato__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contato__titulo {
+  font-size: var(--fs-h2);
+  line-height: 1.15;
+  letter-spacing: .005em;
+  margin-bottom: 2rem;
+}
+
+.contato__detalhes {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.25rem;
+}
+
+.contato__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.contato__rotulo {
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-ui);
+  color: var(--champagne);
+}
+
+.contato__dado {
+  font-size: 1.0625rem;
+  line-height: var(--lh-body);
+  color: var(--offwhite);
+  margin: 0;
+}
+
+.contato__dado--suave {
+  color: var(--texto-suave);
+  font-size: 0.9375rem;
+}
+
+.contato__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+}
+
+/* Coluna visual: Fachada ou Mapa */
+.contato__visual {
+  position: relative;
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .contato__visual {
+    order: -1; /* Mobile: fachada primeiro */
+  }
+}
+
+.contato__moldura {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--linha);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--grafite-elevado);
+}
+
+/* Recorte da fachada noturna a partir da colagem estabelecimento.png */
+.contato__fachada-crop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.contato__fachada-crop img {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  left: 0;
+  top: 0;
+  filter: var(--foto-filter);
+  transition: transform 800ms var(--ease-out);
+}
+
+.contato__moldura:hover .contato__fachada-crop img {
+  transform: scale(1.02);
+}
+
+.contato__legenda {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(0deg, rgba(23, 23, 23, 0.9) 0%, rgba(23, 23, 23, 0) 100%);
+  font-size: var(--fs-small);
+  color: var(--texto-suave);
+  pointer-events: none;
+}
+
+/* Mapa opcional incorporado */
+.contato__mapa {
+  width: 100%;
+  height: 100%;
+  border: none;
+  filter: grayscale(1) invert(.9) contrast(.9);
+}
+
+/* ==========================================================================
+   2. RODAPÉ (footer)
+   ========================================================================== */
+.site-footer {
+  background-color: var(--grafite);
+  color: var(--offwhite);
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+/* Linha superior de 1px --champagne que se desenha da esquerda para a direita */
+.site-footer__linha {
+  width: 100%;
+  height: 1px;
+  background: var(--champagne);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1200ms var(--ease-out);
+}
+
+.site-footer__linha.is-in {
+  transform: scaleX(1);
+}
+
+.site-footer__corpo {
+  padding-top: clamp(3rem, 6vw, 4.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer__grid {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+/* Coluna 1: Logo e Marca */
+.site-footer__marca {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.site-footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--offwhite);
+}
+
+.site-footer__logo-svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--champagne);
+  flex-shrink: 0;
+}
+
+.site-footer__logo-nome {
+  font-size: 1.1875rem;
+  font-weight: 600;
+  letter-spacing: var(--ls-ui);
+  text-transform: uppercase;
+}
+
+.site-footer__slogan {
+  font-size: var(--fs-small);
+  letter-spacing: .2em;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.site-footer__demonstrativo {
+  font-size: var(--fs-ui);
+  color: rgba(233, 225, 212, 0.45);
+  margin-top: 0.5rem;
+}
+
+/* Coluna 2: Navegação */
+.site-footer__col-titulo {
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-ui);
+  color: var(--champagne);
+  margin: 0 0 1.25rem;
+}
+
+.site-footer__nav-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+.site-footer__nav-link {
+  color: var(--texto-suave);
+  text-decoration: none;
+  font-size: var(--fs-small);
+  transition: color 200ms ease;
+}
+
+.site-footer__nav-link:hover {
+  color: var(--champagne-claro);
+}
+
+/* Coluna 3: Contato */
+.site-footer__contato-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.site-footer__contato-item {
+  font-size: var(--fs-small);
+  color: var(--texto-suave);
+  line-height: 1.4;
+}
+
+.site-footer__contato-item a {
+  color: var(--offwhite);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.site-footer__contato-item a:hover {
+  color: var(--champagne-claro);
+}
+
+/* Faixa inferior: Direitos autorais e Voltar ao topo */
+.site-footer__base {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--linha);
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+  .site-footer__base {
+    flex-direction: row;
+  }
+}
+
+.site-footer__copyright {
+  font-size: var(--fs-small);
+  color: var(--texto-suave);
+  margin: 0;
+}
+
+.site-footer__topo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: 1px solid var(--linha);
+  border-radius: var(--radius);
+  color: var(--offwhite);
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-ui);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-ui);
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 240ms ease, color 240ms ease, background-color 240ms ease;
+}
+
+.site-footer__topo-btn:hover {
+  border-color: var(--champagne);
+  color: var(--champagne-claro);
+  background: rgba(180, 154, 115, 0.08);
+}
+
+.site-footer__topo-seta {
+  width: 14px;
+  height: 14px;
+  stroke: var(--champagne);
+  transition: transform 240ms ease;
+}
+
+.site-footer__topo-btn:hover .site-footer__topo-seta {
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   3. BOTÃO FLUTUANTE DE WHATSAPP (.whatsapp-flutuante)
+   ========================================================================== */
+.whatsapp-flutuante {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 12px 22px;
+  min-height: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(24px) scale(0.95);
+  pointer-events: none;
+  transition: opacity 350ms ease, transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.whatsapp-flutuante.is-visivel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.whatsapp-flutuante.is-oculto {
+  opacity: 0;
+  transform: translateY(24px) scale(0.95);
+  pointer-events: none;
+}
+
+.whatsapp-flutuante__icone {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.whatsapp-flutuante__texto {
+  font-size: var(--fs-ui);
+  letter-spacing: var(--ls-ui);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Versão Mobile: ícone circular de 56px */
+@media (max-width: 767px) {
+  .whatsapp-flutuante {
+    width: 56px;
+    height: 56px;
+    min-height: 56px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .whatsapp-flutuante__texto {
+    display: none;
+  }
+
+  .whatsapp-flutuante__icone {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__linha,
+  .whatsapp-flutuante,
+  .site-footer__topo-seta {
+    transition: none !important;
+  }
+}

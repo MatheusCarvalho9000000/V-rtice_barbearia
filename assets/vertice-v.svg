@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="#B49A73" stroke-width="2" stroke-linecap="square" role="img" aria-label="Símbolo Vértice">
+  <!-- Duas linhas que se encontram em um vértice; triângulo recortado no canto superior esquerdo -->
+  <path d="M10 6 L24 42"/>
+  <path d="M42 6 L24 42"/>
+</svg>

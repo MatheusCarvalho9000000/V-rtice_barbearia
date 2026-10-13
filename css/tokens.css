@@ -1,0 +1,82 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — TOKENS DE DESIGN (SESSÃO 0)
+   Única fonte de verdade para cores, tipografia, espaçamento e movimento.
+   Todas as sessões reutilizam estes nomes. Não recriar nem duplicar.
+   ========================================================================== */
+
+:root {
+  /* ---- Cores oficiais da marca ---- */
+  --grafite: #171717;      /* Fundo principal; texto sobre fundos claros */
+  --offwhite: #E9E1D4;     /* Texto sobre fundos escuros; fundo das sessões claras */
+  --champagne: #B49A73;    /* Destaque: linhas, ícones, botões, detalhes */
+  --verde: #414638;        /* Apoio: "Como funciona", botões secundários, degradês */
+
+  /* ---- Tons derivados ---- */
+  --grafite-elevado: #212121;   /* Superfícies um nível acima (Diferenciais, campos) */
+  --champagne-claro: #E3D3B3;   /* Ponto claro dos degradês de botão */
+  --champagne-escuro: #8A7550;  /* Detalhes e ícones sobre off-white */
+  --verde-medio: #5A6350;       /* Ponto claro dos degradês verdes */
+  --texto-suave: rgba(233, 225, 212, .72);  /* Texto secundário sobre escuro */
+  --linha: rgba(233, 225, 212, .14);        /* Divisórias finas sobre escuro */
+  --linha-clara: rgba(23, 23, 23, .16);     /* Divisórias finas sobre off-white */
+
+  /* Pontos extras do degradê do botão primário (escuro do champagne) */
+  --champagne-degrade: #A88E66;
+
+  /*
+    REGRAS DE CONTRASTE
+    - Fundo escuro: texto --offwhite / --texto-suave; destaques --champagne.
+    - Fundo off-white: texto --grafite; destaques --champagne-escuro.
+      NUNCA usar --champagne como cor de texto sobre off-white.
+    - Texto do botão champagne: --grafite. Texto do botão verde: --offwhite.
+  */
+
+  /* ---- Tipografia ---- */
+  --font-base: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --fs-h1: clamp(2.4rem, 6.2vw, 5rem);
+  --fs-h2: clamp(1.9rem, 4vw, 3.2rem);
+  --fs-h3: clamp(1.15rem, 2vw, 1.5rem);
+  --fs-body: 1rem;
+  --fs-small: .875rem;
+  --fs-ui: .8125rem;          /* botões, navegação, slogan */
+  --ls-ui: .18em;
+  --lh-body: 1.7;
+  --measure: 62ch;            /* largura máxima de linha */
+
+  /* ---- Grid e espaçamento ---- */
+  --container-max: 1200px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --section-space: clamp(80px, 12vw, 160px);
+  --header-h: 88px;           /* altura do cabeçalho no topo (SESSÃO 1 reduz p/ 68px) */
+  --header-h-scrolled: 68px;
+
+  /* Breakpoints (referência; media queries não aceitam var()):
+     480 · 768 · 1024 · 1280 */
+
+  /* ---- Forma ---- */
+  --radius: 2px;
+
+  /* ---- Tratamento unificado das fotos ---- */
+  --foto-filter: saturate(.85) contrast(1.05) brightness(.95);
+  --foto-overlay: rgba(23, 23, 23, .2);   /* camada grafite 15–25% */
+
+  /* ---- Movimento ---- */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --anim-y: 48px;             /* deslocamento de entrada (24px no mobile) */
+  --anim-y-out: -32px;        /* deslocamento de saída por cima */
+  --anim-dur-in: 800ms;
+  --anim-dur-out: 500ms;
+  --anim-stagger: 90ms;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --anim-y: 24px;
+    --anim-dur-in: 600ms;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root { --fs-body: 1.0625rem; }
+}

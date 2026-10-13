@@ -1,0 +1,143 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 10: FUNDADORES (OPCIONAL)
+   Usa tokens (tokens.css), base (base.css) e animações (animations.css).
+   Fundo off-white, história em coluna central com primeira frase destacada,
+   duas colunas com retratos em 4:5 e placeholders elegantes em grafite.
+   ========================================================================== */
+
+.fundadores {
+  background: var(--offwhite);
+  color: var(--grafite);
+  position: relative;
+}
+
+/* ---- Introdução e história ---- */
+.fundadores__intro {
+  max-width: 780px;
+  margin-inline: auto;
+  margin-bottom: clamp(56px, 9vw, 96px);
+  text-align: center;
+}
+
+.fundadores__titulo {
+  color: var(--grafite);
+  margin-bottom: 24px;
+}
+
+.fundadores__historia-destaque {
+  font-size: clamp(1.125rem, 2vw, 1.35rem);
+  line-height: 1.55;
+  color: var(--grafite);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.fundadores__historia-complemento {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: rgba(23, 23, 23, 0.78);
+  margin: 0;
+}
+
+/* ---- Grid com os 2 cofundadores ---- */
+.fundadores__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .fundadores__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(36px, 5vw, 64px);
+  }
+}
+
+.fundadores__card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Retrato (proporção 4:5 com placeholder elegante em grafite) ---- */
+.fundadores__retrato {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  background: var(--grafite);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(23, 23, 23, 0.12);
+}
+
+.fundadores__iniciais {
+  font-family: var(--font-base);
+  font-weight: 300;
+  font-size: clamp(3.5rem, 6vw, 4.5rem);
+  letter-spacing: .12em;
+  color: var(--offwhite);
+  opacity: 0.88;
+  user-select: none;
+  margin-right: -.12em;
+}
+
+/* Slot para foto real quando existir (trocável sem mexer em CSS) */
+.fundadores__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  display: none;
+}
+
+.fundadores__img[src]:not([src=""]) {
+  display: block;
+}
+
+/* Borda desenhada SVG */
+.fundadores__borda {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fundadores__borda rect {
+  stroke: var(--champagne-escuro);
+  stroke-width: 2;
+}
+
+/* ---- Informações do cofundador ---- */
+.fundadores__nome {
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  color: var(--grafite);
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+
+.fundadores__cargo {
+  display: block;
+  font-size: var(--fs-small);
+  color: var(--champagne-escuro);
+  font-weight: 600;
+  letter-spacing: var(--ls-ui);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.fundadores__bio {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: rgba(23, 23, 23, 0.8);
+  margin: 0;
+}

@@ -1,0 +1,237 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 7: COMBOS
+   Usa tokens (tokens.css), base (base.css), botões (buttons.css) e animações.
+   Fundo grafite, 5 colunas no desktop, carrossel scroll-snap no mobile,
+   destaque no card Prime com borda em degradê animado contínuo.
+   ========================================================================== */
+
+.combos {
+  background: var(--grafite);
+  color: var(--offwhite);
+  position: relative;
+}
+
+.combos__intro {
+  max-width: 680px;
+  margin-bottom: clamp(48px, 8vw, 72px);
+}
+
+.combos__titulo {
+  margin-bottom: 16px;
+}
+
+.combos__intro-texto {
+  color: var(--texto-suave);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  margin: 0;
+}
+
+/* ---- Grade no desktop e carrossel no mobile ---- */
+.combos__carrossel-wrapper {
+  position: relative;
+}
+
+.combos__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--linha);
+  border-bottom: 1px solid var(--linha);
+}
+
+.combos__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 24px;
+  border-left: 1px solid var(--linha);
+  background: transparent;
+  transition: background-color 300ms ease;
+}
+
+.combos__card:last-child {
+  border-right: 1px solid var(--linha);
+}
+
+/* Hover (desktop): coluna ganha fundo grafite-elevado e o botão passa a primário */
+@media (min-width: 1024px) {
+  .combos__card:hover {
+    background-color: var(--grafite-elevado);
+  }
+
+  .combos__card:hover .combos__card-btn {
+    background-image: linear-gradient(90deg, var(--champagne-degrade) 0%, var(--champagne-claro) 50%, var(--champagne-degrade) 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0%;
+    color: var(--grafite);
+    border-color: transparent;
+    transform: translateY(-2px);
+  }
+}
+
+/* ---- Destaque do Prime ---- */
+.combos__card--prime {
+  background-color: var(--grafite-elevado);
+}
+
+.combos__card--prime::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--champagne-degrade) 0%, var(--champagne-claro) 50%, var(--champagne-degrade) 100%);
+  background-size: 200% 100%;
+  animation: primeBordaGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes primeBordaGlow {
+  from { background-position: 0% 0%; }
+  to   { background-position: 100% 0%; }
+}
+
+.combos__selo {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-ui);
+  color: var(--champagne);
+  margin-bottom: 16px;
+}
+
+/* ---- Conteúdo do card ---- */
+.combos__card-conteudo {
+  margin-bottom: 32px;
+}
+
+.combos__card-nome {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--offwhite);
+  margin: 0 0 16px;
+}
+
+.combos__card-desc {
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--texto-suave);
+  margin: 0;
+}
+
+/* ---- Rodapé do card: preço/duração e botão ---- */
+.combos__card-rodape {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.combos__card-meta {
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.combos__card-duracao {
+  font-size: var(--fs-small);
+  color: var(--texto-suave);
+  margin-bottom: 4px;
+}
+
+.combos__card-valor {
+  font-size: var(--fs-small);
+  color: var(--champagne);
+  letter-spacing: .02em;
+}
+
+.combos__card-btn {
+  width: 100%;
+}
+
+/* ---- Mobile: carrossel horizontal com scroll-snap ---- */
+.combos__indicadores {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .combos__carrossel-wrapper {
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .combos__carrossel-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .combos__grid {
+    display: flex;
+    width: max-content;
+    gap: 16px;
+    border-top: none;
+    border-bottom: none;
+    padding-bottom: 24px;
+  }
+
+  .combos__card {
+    scroll-snap-align: start;
+    width: clamp(260px, 72vw, 320px);
+    flex-shrink: 0;
+    border: 1px solid var(--linha);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    background: var(--grafite);
+  }
+
+  .combos__card--prime {
+    background: var(--grafite-elevado);
+  }
+
+  .combos__card:last-child {
+    border-right: 1px solid var(--linha);
+  }
+
+  /* Indicador de posição horizontal */
+  .combos__indicadores {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  .combos__ind-trilha {
+    position: relative;
+    width: 120px;
+    height: 2px;
+    background: var(--linha);
+    overflow: hidden;
+  }
+
+  .combos__ind-barra {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 20%;
+    background: var(--champagne);
+    transform: translateX(0);
+    transition: transform 150ms ease-out;
+  }
+}
+
+/* ---- Acessibilidade de movimento ---- */
+@media (prefers-reduced-motion: reduce) {
+  .combos__card--prime::before {
+    animation: none;
+    background-position: 0% 0%;
+  }
+  .combos__card {
+    transition: none;
+  }
+}

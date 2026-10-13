@@ -1,0 +1,167 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 3: SOBRE A VÉRTICE
+   Usa tokens (tokens.css), base (base.css) e animações (animations.css).
+   Layout assimétrico de 12 colunas (desktop) e coluna única (mobile).
+   ========================================================================== */
+
+.sobre {
+  background: var(--grafite);
+  color: var(--offwhite);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Grid principal: 12 colunas ---- */
+.sobre__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .sobre__grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 32px;
+  }
+
+  /* Texto nas colunas 1–6 */
+  .sobre__conteudo {
+    grid-column: 1 / 7;
+  }
+
+  /* Imagem nas colunas 8–12, offset de 48px para baixo */
+  .sobre__midia-wrapper {
+    grid-column: 8 / 13;
+    margin-top: 48px;
+  }
+}
+
+/* ---- Textos ---- */
+.sobre__titulo {
+  margin-bottom: 32px;
+}
+
+.sobre__textos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sobre__paragrafo {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--texto-suave);
+  margin-bottom: 0;
+}
+
+/* ---- Imagem e Motivo do Vértice ---- */
+.sobre__midia-wrapper {
+  position: relative;
+}
+
+.sobre__midia {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  clip-path: polygon(48px 0, 100% 0, 100% 100%, 0 100%, 0 48px);
+  border-radius: var(--radius);
+  background: var(--grafite-elevado);
+}
+
+.sobre__midia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Linhas do vértice sobrepostas na lateral da imagem */
+.sobre__linhas {
+  position: absolute;
+  left: -28px;
+  bottom: 24px;
+  width: 72px;
+  height: 96px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---- Três blocos (Missão, Visão, Valores) ---- */
+.sobre__pilares {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: clamp(64px, 10vw, 112px);
+  padding-top: 0;
+  border-top: none;
+}
+
+@media (min-width: 1024px) {
+  .sobre__pilares {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .sobre__pilar {
+    padding-inline: 36px;
+    border-left: 1px solid var(--linha);
+  }
+
+  .sobre__pilar:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .sobre__pilar:last-child {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .sobre__midia {
+    aspect-ratio: 4 / 3;
+    margin-top: 16px;
+  }
+
+  .sobre__pilares {
+    gap: 0;
+  }
+
+  .sobre__pilar {
+    padding-block: 32px;
+    border-top: 1px solid var(--linha);
+  }
+
+  .sobre__pilar:first-child {
+    border-top: 1px solid var(--linha);
+  }
+}
+
+.sobre__pilar-titulo {
+  color: var(--champagne);
+  margin-bottom: 16px;
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+
+.sobre__pilar-texto {
+  color: var(--texto-suave);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+/* Lista de valores com marcador 'V' */
+.sobre__valores-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin: 0;
+}
+
+.sobre__valores-lista li {
+  margin-bottom: 0;
+  color: var(--texto-suave);
+  white-space: nowrap;
+}

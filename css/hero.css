@@ -1,0 +1,226 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 2: HERO
+   Usa tokens, botões e o catálogo da Sessão 0 (.crossfade, .kenburns, .shine,
+   máscara de linhas .anim-line, [data-parallax]).
+   A abertura é orquestrada por js/hero.js (classes .is-open e .is-controles).
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  height: 100svh;
+  min-height: 640px;
+  overflow: hidden;
+  background: var(--grafite);   /* 0 ms: tela em grafite */
+  color: var(--offwhite);
+}
+
+/* ---- Fundo ---- */
+.hero__media {
+  position: absolute;
+  inset: -40px 0;                /* folga vertical para a paralaxe (±30px) */
+  z-index: -2;
+}
+.js .hero__media { opacity: 0; transition: opacity 1200ms ease; }
+.js .hero.is-open .hero__media { opacity: 1; }
+
+.hero__slides { position: absolute; inset: 0; }
+
+/* Cada slide é um "container" para recortar a colagem com cover responsivo */
+.hero__slide { container-type: size; overflow: hidden; }
+
+.hero__foto {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: var(--fx, 50%) var(--fy, 50%);
+  filter: var(--foto-filter);
+}
+
+/*
+  Recorte de uma região da colagem estabelecimento.png (sem editar o arquivo).
+  --r: proporção do recorte · --iw/--ix/--iy: tamanho e deslocamento da imagem inteira.
+  --fx/--fy: ponto de foco (equivale ao object-position).
+*/
+.hero__crop {
+  position: absolute;
+  left: var(--fx, 50%);
+  top: var(--fy, 50%);
+  width: max(100cqw, calc(100cqh * var(--r)));
+  aspect-ratio: var(--r);
+  overflow: hidden;
+  transform: translate(calc(var(--fx, 50%) * -1), calc(var(--fy, 50%) * -1));
+}
+.hero__crop img {
+  position: absolute;
+  width: var(--iw); height: auto; max-width: none;
+  left: var(--ix); top: var(--iy);
+  filter: var(--foto-filter);
+}
+
+/* Foco por slide (desktop) e ajuste retrato (mobile) */
+.hero__slide--fachada  { --fx: 45%; --fy: 50%; }
+.hero__slide--estacoes { --fx: 60%; --fy: 50%; }
+.hero__slide--corredor { --fx: 55%; --fy: 50%; }
+.hero__slide--recepcao { --fx: 50%; --fy: 50%; }
+@media (max-width: 767px) {
+  .hero__slide--fachada  { --fx: 40%; }   /* letreiro */
+  .hero__slide--estacoes { --fx: 72%; }   /* cadeiras */
+  .hero__slide--corredor { --fx: 58%; }
+  .hero__slide--recepcao { --fx: 45%; }
+}
+
+/* Camadas de proteção para leitura */
+.hero__overlay {
+  position: absolute; inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(23,23,23,.88) 0%, rgba(23,23,23,.55) 45%, rgba(23,23,23,.15) 100%),
+    linear-gradient(180deg, rgba(23,23,23,.55) 0%, rgba(23,23,23,0) 30%, rgba(23,23,23,.92) 100%);
+  pointer-events: none;
+}
+
+/* ---- Conteúdo (à esquerda, terço inferior) ---- */
+.hero__conteudo {
+  position: relative;
+  width: 100%;
+  padding-bottom: 150px;
+  opacity: var(--hp-o, 1);                              /* fade-out ao rolar */
+  transform: translate3d(0, var(--hp-y, 0px), 0);
+}
+.hero__conteudo-interno { max-width: 760px; }
+
+/* Símbolo V: desenhado + brilho */
+.hero__v { width: 56px; height: 56px; margin-bottom: 28px; }
+.hero__v svg { width: 56px; height: 56px; }
+.hero__v path {
+  fill: none; stroke: var(--champagne); stroke-width: 2.5; stroke-linecap: square;
+}
+.js .hero__v path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.js .hero.is-open .hero__v path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 900ms var(--ease-out) 300ms;   /* 300 ms, 900 ms */
+}
+
+/* H1: linhas sobem da máscara (900 ms e 1020 ms) */
+.hero__titulo { margin-bottom: 24px; }
+.js .hero__titulo .anim-line__inner { transform: translateY(105%); }
+.js .hero.is-open .hero__titulo .anim-line__inner {
+  transform: none;
+  transition: transform 900ms var(--ease-out) calc(900ms + var(--line-i, 0) * 120ms);
+}
+
+/* Subtítulo (1400 ms) */
+.hero__sub {
+  max-width: 52ch;
+  margin-bottom: 36px;
+  color: var(--texto-suave);
+}
+.js .hero__sub { opacity: 0; transform: translateY(var(--anim-y)); }
+.js .hero.is-open .hero__sub {
+  opacity: 1; transform: none;
+  transition: opacity 800ms var(--ease-out) 1400ms, transform 800ms var(--ease-out) 1400ms;
+}
+
+/* Botões em sequência (1650 ms, +90 ms) */
+.hero__acoes { display: flex; flex-wrap: wrap; gap: 16px; }
+.js .hero__acoes > * { opacity: 0; transform: translateY(var(--anim-y)); }
+.js .hero.is-open .hero__acoes > * {
+  opacity: 1; transform: none;
+  /* o .btn já define transições próprias; estas as complementam sem perdê-las */
+  transition: opacity 700ms var(--ease-out) calc(1650ms + var(--i, 0) * 90ms),
+              transform 700ms var(--ease-out) calc(1650ms + var(--i, 0) * 90ms),
+              background-position 400ms ease, background-size 400ms ease, color 400ms ease;
+}
+/* Depois da abertura, hover volta a responder sem atraso */
+.hero.is-aberto .hero__acoes > * {
+  transition: background-position 400ms ease, background-size 400ms ease,
+              color 400ms ease, transform 400ms var(--ease-out), opacity 400ms ease;
+}
+
+/* ---- Controles inferiores (2200 ms) ---- */
+.hero__controles {
+  position: absolute; left: 0; right: 0; bottom: 32px;
+}
+.hero__controles .container {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+.js .hero__controles { opacity: 0; transition: opacity 600ms ease; }
+.js .hero.is-controles .hero__controles { opacity: 1; }
+
+.hero__indicadores { display: flex; gap: 12px; }
+.hero__ind {
+  position: relative;
+  width: 40px; height: 28px;      /* área de toque maior que a linha */
+  padding: 0; border: 0; background: none;
+  cursor: pointer;
+}
+.hero__ind::before,
+.hero__ind-fill {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: 2px; margin-top: -1px;
+}
+.hero__ind::before { background: rgba(233, 225, 212, .28); }
+.hero__ind-fill {
+  background: var(--champagne);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+/* Barra de progresso durante os 6,5 s */
+.hero__ind.is-ativo .hero__ind-fill {
+  animation: hero-progresso var(--hero-intervalo, 6500ms) linear forwards;
+}
+.hero.is-pausado .hero__ind-fill { animation-play-state: paused; }
+@keyframes hero-progresso { to { transform: scaleX(1); } }
+
+.hero__lado { display: flex; align-items: center; gap: 20px; }
+.hero__cidade {
+  font-size: var(--fs-small);
+  color: var(--texto-suave);
+  letter-spacing: .04em;
+}
+/* Indicação de rolagem: linha de 48px com ponto descendo em loop */
+.hero__rolar { position: relative; width: 3px; height: 48px; overflow: hidden; }
+.hero__rolar::before {
+  content: ""; position: absolute; left: 1px; top: 0; bottom: 0; width: 1px;
+  background: rgba(233, 225, 212, .28);
+}
+.hero__rolar::after {
+  content: ""; position: absolute; left: 0; top: 0;
+  width: 3px; height: 3px; border-radius: 50%;
+  background: var(--champagne);
+  animation: hero-rolar 2.2s ease-in-out infinite;
+}
+@keyframes hero-rolar {
+  0%   { transform: translateY(-4px); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(48px); opacity: 0; }
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 767px) {
+  .hero__conteudo { padding-bottom: 96px; }      /* espaço para o botão flutuante */
+  .hero__acoes { flex-direction: column; }
+  .hero__acoes .btn { width: 100%; }
+  .hero__rolar { display: none; }
+  .hero__controles { bottom: 28px; }
+}
+@media (max-width: 479px) {
+  .hero__titulo { font-size: 2.4rem; }
+}
+
+/* ---- Movimento reduzido: só o slide 1, tudo já visível ---- */
+@media (prefers-reduced-motion: reduce) {
+  .js .hero__media { opacity: 1; transition: none; }
+  .js .hero__v path { stroke-dashoffset: 0; transition: none; }
+  .js .hero__titulo .anim-line__inner { transform: none; transition: none; }
+  .js .hero__sub, .js .hero__acoes > *, .js .hero__controles {
+    opacity: 1; transform: none; transition: none;
+  }
+  .hero__ind.is-ativo .hero__ind-fill { animation: none; transform: scaleX(1); }
+  .hero__rolar::after { animation: none; display: none; }
+  .hero__conteudo { opacity: 1; transform: none; }
+}

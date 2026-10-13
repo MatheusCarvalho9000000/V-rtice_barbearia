@@ -1,0 +1,237 @@
+/* ==========================================================================
+   VÉRTICE BARBEARIA — SESSÃO 8: COMO FUNCIONA
+   Usa tokens (tokens.css), base (base.css) e animações (animations.css).
+   Fundo verde profundo (#414638), linha do tempo vertical com progresso contínuo,
+   nós circulares que se preenchem e numerais de 1 a 6 em destaque.
+   ========================================================================== */
+
+.como-funciona {
+  background: var(--verde);
+  color: var(--offwhite);
+  position: relative;
+  overflow: hidden;
+}
+
+.como-funciona__intro {
+  text-align: center;
+  max-width: 640px;
+  margin-inline: auto;
+  margin-bottom: clamp(56px, 9vw, 96px);
+}
+
+.como-funciona__titulo {
+  color: var(--offwhite);
+  margin-bottom: 16px;
+}
+
+.como-funciona__intro-texto {
+  color: var(--texto-suave);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  margin: 0;
+}
+
+/* ---- Linha do tempo vertical ---- */
+.como-funciona__timeline {
+  position: relative;
+  max-width: 960px;
+  margin-inline: auto;
+  padding-block: 20px 40px;
+}
+
+/* Trilha central / lateral */
+.como-funciona__trilha {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(233, 225, 212, .25);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.como-funciona__trilha-progresso {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--champagne);
+}
+
+/* ---- Etapas individuais ---- */
+.como-funciona__etapa {
+  position: relative;
+  margin-bottom: clamp(48px, 8vw, 88px);
+}
+
+.como-funciona__etapa:last-child {
+  margin-bottom: 0;
+}
+
+/* Desktop: alternância esquerda / direita */
+@media (min-width: 768px) {
+  .como-funciona__etapa {
+    width: calc(50% - 48px);
+  }
+
+  .como-funciona__etapa--esq {
+    margin-right: auto;
+    text-align: right;
+  }
+
+  .como-funciona__etapa--dir {
+    margin-left: auto;
+    text-align: left;
+  }
+
+  /* Nó central */
+  .como-funciona__no {
+    position: absolute;
+    top: 24px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--champagne);
+    background: var(--verde);
+    box-sizing: border-box;
+    z-index: 2;
+    transition: background-color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
+  }
+
+  .como-funciona__etapa--esq .como-funciona__no {
+    right: -55px;
+    transform: translateX(50%);
+  }
+
+  .como-funciona__etapa--dir .como-funciona__no {
+    left: -55px;
+    transform: translateX(-50%);
+  }
+
+  .como-funciona__etapa.is-ativa .como-funciona__no,
+  .como-funciona__etapa.is-passada .como-funciona__no {
+    background: var(--champagne);
+    box-shadow: 0 0 12px rgba(180, 154, 115, 0.6);
+  }
+
+  /* Numeral grande atrás do título */
+  .como-funciona__num {
+    position: absolute;
+    top: -28px;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--champagne);
+    opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    transition: opacity 300ms ease, transform 300ms ease;
+  }
+
+  .como-funciona__etapa--esq .como-funciona__num {
+    right: 0;
+  }
+
+  .como-funciona__etapa--dir .como-funciona__num {
+    left: 0;
+  }
+}
+
+/* Mobile: alinhamento à esquerda com trilha lateral */
+@media (max-width: 767px) {
+  .como-funciona__trilha {
+    left: 18px;
+    transform: none;
+  }
+
+  .como-funciona__etapa {
+    padding-left: 56px;
+    text-align: left;
+  }
+
+  .como-funciona__no {
+    position: absolute;
+    top: 20px;
+    left: 12px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--champagne);
+    background: var(--verde);
+    box-sizing: border-box;
+    z-index: 2;
+    transition: background-color 300ms ease, transform 300ms ease;
+  }
+
+  .como-funciona__etapa.is-ativa .como-funciona__no,
+  .como-funciona__etapa.is-passada .como-funciona__no {
+    background: var(--champagne);
+  }
+
+  .como-funciona__num {
+    position: absolute;
+    top: -24px;
+    left: 56px;
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--champagne);
+    opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+}
+
+/* Conteúdo da etapa */
+.como-funciona__conteudo {
+  position: relative;
+  z-index: 1;
+}
+
+.como-funciona__etapa-titulo {
+  font-size: var(--fs-h3);
+  color: var(--offwhite);
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+
+.como-funciona__etapa-desc {
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: rgba(233, 225, 212, 0.85);
+  margin: 0;
+}
+
+.como-funciona__etapa.is-ativa .como-funciona__num {
+  opacity: 0.85;
+}
+
+/* ---- Frase de fechamento ---- */
+.como-funciona__fechamento {
+  text-align: center;
+  max-width: 580px;
+  margin: clamp(56px, 9vw, 96px) auto 0;
+  padding-top: 36px;
+  border-top: 1px solid rgba(233, 225, 212, 0.2);
+}
+
+.como-funciona__fechamento-texto {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--offwhite);
+  margin: 0;
+}
+
+/* ---- Acessibilidade de movimento ---- */
+@media (prefers-reduced-motion: reduce) {
+  .como-funciona__no {
+    transition: none;
+  }
+  .como-funciona__num {
+    transition: none;
+  }
+}

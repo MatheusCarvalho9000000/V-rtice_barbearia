@@ -1,0 +1,12 @@
+# Arquivos de documentação e teste internos
+vertice-barbearia-landing-page-spec.md
+teste-fundacao.html
+
+# Ativos de referência que não são usados no site público
+identidade_visual.png
+Vértice Barbearia Logo Lockup.png
+
+# Controle de versão e documentações
+.git
+.gitignore
+README.md

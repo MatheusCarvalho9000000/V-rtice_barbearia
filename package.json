@@ -1,0 +1,18 @@
+{
+  "name": "vertice-barbearia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page oficial da Vértice Barbearia — São Bento do Sul, SC",
+  "scripts": {
+    "start": "npx -y serve .",
+    "dev": "npx -y serve ."
+  },
+  "keywords": [
+    "barbearia",
+    "landing-page",
+    "vertice",
+    "sao-bento-do-sul"
+  ],
+  "author": "Vértice Barbearia",
+  "license": "UNLICENSED"
+}
